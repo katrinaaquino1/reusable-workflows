@@ -55,7 +55,7 @@ jobs:
         with:
           repository: ${{ env.SCRIPT_REPO }}
           path: script
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
 
       - name: Make script executable
         run: chmod +x ./${{ env.SCRIPT_PATH }}

@@ -29,9 +29,9 @@ on:
       gateway_domain:
         required: true
         type: string
+    secrets:
       PAT:
         required: true
-        type: string
 
 permissions:
   contents: read

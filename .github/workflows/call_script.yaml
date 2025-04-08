@@ -1,0 +1,72 @@
+---
+name: Run Script Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      # Define all variable inputs needed by the script
+      prefix:
+        required: true
+        type: string
+      createdby:
+        required: true
+        type: string
+      createdbytag:
+        required: true
+        type: string
+      costcentertag:
+        required: true
+        type: string
+      appnametag:
+        required: true
+        type: string
+      envnametag:
+        required: true
+        type: string
+      fhir_domain:
+        required: true
+        type: string
+      gateway_domain:
+        required: true
+        type: string
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    env:
+      # Pass values as env vars to be used in the shell script
+      PREFIX: ${{ inputs.prefix }}
+      CREATEDBY: ${{ inputs.createdby }}
+      CREATEDBYTAG: ${{ inputs.createdbytag }}
+      COSTCENTERTAG: ${{ inputs.costcentertag }}
+      APPNAMETAG: ${{ inputs.appnametag }}
+      ENVNAMETAG: ${{ inputs.envnametag }}
+      FHIR_DOMAIN: ${{ inputs.fhir_domain }}
+      GATEWAY_DOMAIN: ${{ inputs.gateway_domain }}
+      SCRIPT_REPO: katrinaaquino1/scripts
+      SCRIPT_PATH: gen_global_vars.sh
+
+    steps:
+      - name: Checkout script repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SCRIPT_REPO }}
+          path: script
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make script executable
+        run: chmod +x ./${{ env.SCRIPT_PATH }}
+
+      - name: Run shell script
+        run: ./${{ env.SCRIPT_PATH }}
+
+      - name: Debug output file
+        run: |
+          echo "=== Contents of global_vars.hcl ==="
+          cat global_vars.hcl || echo "File not found"

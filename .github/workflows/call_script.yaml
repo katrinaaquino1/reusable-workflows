@@ -77,3 +77,9 @@ jobs:
         run: |
           echo "=== Contents of global_vars.hcl ==="
           cat global_vars.hcl || echo "File not found"
+
+      - name: Upload global_vars.hcl as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-vars
+          path: global_vars.hcl

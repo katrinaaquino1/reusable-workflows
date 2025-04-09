@@ -61,10 +61,10 @@ jobs:
           token: ${{ secrets.PAT }}
 
       - name: Make script executable
-        run: chmod +x ./${{ env.SCRIPT_PATH }}
+        run: chmod +x ./script/${{ env.SCRIPT_PATH }}
 
       - name: Run shell script
-        run: ./${{ env.SCRIPT_PATH }}
+        run: ./script/${{ env.SCRIPT_PATH }}
 
       - name: Debug output file
         run: |

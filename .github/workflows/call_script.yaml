@@ -63,9 +63,9 @@ jobs:
       - name: List Files
         run: |
           echo "=== Files in script directory ==="
-          ls -la script || echo "Directory not found"
+          ls -la ./script || echo "Directory not found"
           echo "=== Files in current directory ==="
-          ls -la || echo "Directory not found"
+          ls -la ./ || echo "Directory not found"
 
       - name: Make script executable
         run: chmod +x ./script/${{ env.SCRIPT_PATH }}

@@ -82,4 +82,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: global-vars
-          path: global_vars.hcl
+          path: infrastructure/live/global_vars.hcl

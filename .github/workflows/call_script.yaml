@@ -50,7 +50,7 @@ jobs:
       FHIR_DOMAIN: ${{ inputs.fhir_domain }}
       GATEWAY_DOMAIN: ${{ inputs.gateway_domain }}
       SCRIPT_REPO: katrinaaquino1/scripts
-      SCRIPT_PATH: gen_tg_global_vars.sh
+      SCRIPT_PATH: bin/gen_tg_global_vars.sh
 
     steps:
       - name: Checkout script repo

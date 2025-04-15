@@ -29,6 +29,9 @@ on:
       gateway_domain:
         required: true
         type: string
+      target_dir:
+        required: false
+        type: string
     secrets:
       PAT:
         required: true
@@ -49,6 +52,7 @@ jobs:
       ENVNAMETAG: ${{ inputs.envnametag }}
       FHIR_DOMAIN: ${{ inputs.fhir_domain }}
       GATEWAY_DOMAIN: ${{ inputs.gateway_domain }}
+      TARGET_DIR: ${{ inputs.target_dir }}
       SCRIPT_REPO: katrinaaquino1/scripts
       SCRIPT_PATH: bin/gen_tg_global_vars.sh
 
@@ -82,4 +86,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: global-vars
-          path: infrastructure/live/global_vars.hcl
+          path: ${{ env.TARGET_DIR }}global_vars.hcl

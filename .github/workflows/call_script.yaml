@@ -80,7 +80,7 @@ jobs:
       - name: Debug output file
         run: |
           echo "=== Contents of global_vars.hcl ==="
-          cat global_vars.hcl || echo "File not found"
+          cat ./script/global_vars.hcl || echo "File not found"
 
       - name: Upload global_vars.hcl as artifact
         uses: actions/upload-artifact@v4

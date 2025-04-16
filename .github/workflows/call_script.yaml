@@ -55,7 +55,7 @@ jobs:
       TARGET_DIR: ${{ inputs.target_dir }}
       SCRIPT_REPO: katrinaaquino1/scripts
       SCRIPT_PATH: gen_tg_global_vars.sh
-      GITHUB_TOKEN: ${{ secrets.PAT }}
+      # GITHUB_TOKEN: ${{ secrets.PAT }}
 
     steps:
       - name: Checkout script repo
@@ -64,6 +64,8 @@ jobs:
           repository: ${{ env.SCRIPT_REPO }}
           path: script
           # token: ${{ secrets.PAT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
       - name: List Files
         run: |

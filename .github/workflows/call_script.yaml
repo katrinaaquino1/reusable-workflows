@@ -32,6 +32,9 @@ on:
       target_dir:
         required: true
         type: string
+    secrets:
+      token:
+        required: true
 
 permissions:
   contents: read
@@ -59,7 +62,7 @@ jobs:
         with:
           repository: ${{ env.SCRIPT_REPO }}
           path: script
-          token: ${{ secrets.PAT }}
+          token: ${{ secrets.token }}
 
       - name: List Files
         run: |

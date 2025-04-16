@@ -31,9 +31,6 @@
         target_dir:
           required: true
           type: string
-      secrets:
-        PAT:
-          required: true
   
   permissions:
     contents: read

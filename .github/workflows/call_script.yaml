@@ -1,86 +1,80 @@
 ---
-name: Run Script Reusable Workflow
-
-on:
-  workflow_call:
-    inputs:
-      # Define all variable inputs needed by the script
-      prefix:
-        required: true
-        type: string
-      createdby:
-        required: true
-        type: string
-      createdbytag:
-        required: true
-        type: string
-      costcentertag:
-        required: true
-        type: string
-      appnametag:
-        required: true
-        type: string
-      envnametag:
-        required: true
-        type: string
-      gt_fhir_domain:
-        required: true
-        type: string
-      pm_gateway_domain:
-        required: true
-        type: string
-      target_dir:
-        required: true
-        type: string
-
-permissions:
-  contents: read
-
-jobs:
-  run-script:
-    runs-on: ubuntu-latest
-    env:
-      # Pass values as env vars to be used in the shell script
-      PREFIX: ${{ inputs.prefix }}
-      CREATEDBY: ${{ inputs.createdby }}
-      CREATEDBYTAG: ${{ inputs.createdbytag }}
-      COSTCENTERTAG: ${{ inputs.costcentertag }}
-      APPNAMETAG: ${{ inputs.appnametag }}
-      ENVNAMETAG: ${{ inputs.envnametag }}
-      FHIR_DOMAIN: ${{ inputs.gt_fhir_domain }}
-      PM_GATEWAY_DOMAIN: ${{ inputs.pm_gateway_domain }}
-      TARGET_DIR: ${{ inputs.target_dir }}
-      SCRIPT_REPO: katrinaaquino1/scripts
-      SCRIPT_PATH: gen_tg_global_vars.sh
-
-    steps:
-      - name: Checkout script repo
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.SCRIPT_REPO }}
-          path: script
-          token: ${{ secrets.PAT }}
-
-      - name: List Files
-        run: |
-          echo "=== Files in script directory ==="
-          ls -la ./script || echo "Directory not found"
-          echo "=== Files in current directory ==="
-          ls -la ./ || echo "Directory not found"
-
-      - name: Make script executable
-        run: chmod +x ./script/${{ env.SCRIPT_PATH }}
-
-      - name: Run shell script
-        run: ./script/${{ env.SCRIPT_PATH }}
-
-      - name: Debug output file
-        run: |
-          echo "=== Contents of global_vars.hcl ==="
-          cat ${{ env.TARGET_DIR }}global_vars.hcl || echo "File not found"
-
-      - name: Upload global_vars.hcl as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: global-vars
-          path: ${{ env.TARGET_DIR }}global_vars.hcl
+  name: Create Global Vars
+  
+  on:
+    workflow_call:
+      inputs:
+        prefix:
+          required: true
+          type: string
+        createdby:
+          required: true
+          type: string
+        createdbytag:
+          required: true
+          type: string
+        costcentertag:
+          required: true
+          type: string
+        appnametag:
+          required: true
+          type: string
+        envnametag:
+          required: true
+          type: string
+        fhir_domain:
+          required: true
+          type: string
+        pm_gateway_domain:
+          required: true
+          type: string
+        target_dir:
+          required: true
+          type: string
+      secrets:
+        PAT:
+          required: true
+  
+  permissions:
+    contents: read
+  
+  jobs:
+    run-script:
+      runs-on: ubuntu-latest
+      env:
+        PREFIX: ${{ inputs.prefix }}
+        CREATEDBY: ${{ inputs.createdby }}
+        CREATEDBYTAG: ${{ inputs.createdbytag }}
+        COSTCENTERTAG: ${{ inputs.costcentertag }}
+        APPNAMETAG: ${{ inputs.appnametag }}
+        ENVNAMETAG: ${{ inputs.envnametag }}
+        FHIR_DOMAIN: ${{ inputs.fhir_domain }}
+        GATEWAY_DOMAIN: ${{ inputs.pm_gateway_domain }}
+        TARGET_DIR: ${{ inputs.target_dir }}
+        TARGET_REPO: katrinaaquino1/scripts
+        SCRIPT_NAME: gen_global_vars.sh
+  
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            repository: ${{ env.TARGET_REPO }}
+            path: script
+            token: ${{ secrets.PAT }}
+  
+        - name: Make script executable
+          run: chmod +x ./script/${{ env.SCRIPT_NAME }}
+  
+        - name: Run shell script
+          run: ./script/${{ env.SCRIPT_NAME }}
+  
+        - name: Debug output file
+          run: |
+            echo "=== Contents of global_vars.hcl ==="
+            cat ${{ env.TARGET_DIR }}global_vars.hcl || echo "File not found"
+  
+        - name: Upload global_vars.hcl as artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: global-vars
+            path: ${{ env.TARGET_DIR }}global_vars.hcl

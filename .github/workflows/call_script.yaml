@@ -62,7 +62,7 @@ jobs:
         with:
           repository: ${{ env.SCRIPT_REPO }}
           path: script
-          token: ${{ secrets.PAT }}
+          # token: ${{ secrets.PAT }}
 
       - name: List Files
         run: |

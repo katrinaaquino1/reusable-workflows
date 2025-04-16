@@ -23,10 +23,10 @@ on:
       envnametag:
         required: true
         type: string
-      fhir_domain:
+      gt_fhir_domain:
         required: true
         type: string
-      gateway_domain:
+      pm_gateway_domain:
         required: true
         type: string
       target_dir:
@@ -47,8 +47,8 @@ jobs:
       COSTCENTERTAG: ${{ inputs.costcentertag }}
       APPNAMETAG: ${{ inputs.appnametag }}
       ENVNAMETAG: ${{ inputs.envnametag }}
-      FHIR_DOMAIN: ${{ inputs.fhir_domain }}
-      GATEWAY_DOMAIN: ${{ inputs.gateway_domain }}
+      GT_FHIR_DOMAIN: ${{ inputs.gt_fhir_domain }}
+      PM_GATEWAY_DOMAIN: ${{ inputs.pm_gateway_domain }}
       TARGET_DIR: ${{ inputs.target_dir }}
       SCRIPT_REPO: katrinaaquino1/scripts
       SCRIPT_PATH: gen_tg_global_vars.sh

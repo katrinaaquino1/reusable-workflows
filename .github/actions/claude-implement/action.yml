@@ -121,8 +121,6 @@ runs:
 
     - name: Run Claude Code
       shell: bash
-      env:
-        ANTHROPIC_API_KEY: ${{ inputs.anthropic_api_key != '' && inputs.anthropic_api_key || env.ANTHROPIC_API_KEY }}
       run: |
         claude \
           --dangerously-skip-permissions \

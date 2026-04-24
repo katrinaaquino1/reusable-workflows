@@ -15,8 +15,9 @@ inputs:
     description: JIRA issue description (full context for Claude)
     required: true
   anthropic_api_key:
-    description: Anthropic API key
-    required: true
+    description: Anthropic API key — if not provided, ANTHROPIC_API_KEY env var must be set at the job level
+    required: false
+    default: ""
   extra_instructions:
     description: Additional instructions appended to the task file (repo-specific)
     required: false
@@ -121,7 +122,7 @@ runs:
     - name: Run Claude Code
       shell: bash
       env:
-        ANTHROPIC_API_KEY: ${{ inputs.anthropic_api_key }}
+        ANTHROPIC_API_KEY: ${{ inputs.anthropic_api_key != '' && inputs.anthropic_api_key || env.ANTHROPIC_API_KEY }}
       run: |
         claude \
           --dangerously-skip-permissions \

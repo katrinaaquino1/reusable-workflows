@@ -106,10 +106,14 @@ runs:
         ${JIRA_DESCRIPTION}
 
         ## Instructions
+        You MUST use your tools to actually create and edit files on disk. Do not describe
+        what you would do — do it. Use the Write tool, Edit tool, and Bash tool to make
+        real changes to the filesystem.
+
         1. Read CLAUDE.md for project context if it exists
-        2. Implement the changes described above
+        2. Use your tools to implement the changes described above — write real files
         3. Follow existing patterns in the codebase
-        4. Commit your changes using the /commit skill for proper formatting
+        4. Do NOT use the /commit skill — just leave your changes uncommitted, the workflow will commit and push
         5. Do NOT push to remote — the workflow will handle that
 
         ## Do NOT Run Linting
@@ -133,7 +137,7 @@ runs:
       shell: bash
       run: |
         UNCOMMITTED=$(git diff --quiet && git diff --cached --quiet && echo "false" || echo "true")
-        COMMITS_AHEAD=$(git log "origin/${{ inputs.jira_key }}..HEAD" --oneline 2>/dev/null | wc -l | tr -d ' ')
+        COMMITS_AHEAD=$(git log "origin/${{ steps.branch.outputs.base_branch }}..HEAD" --oneline 2>/dev/null | wc -l | tr -d ' ')
         if [ "$UNCOMMITTED" = "true" ] || [ "$COMMITS_AHEAD" -gt "0" ]; then
           echo "changes_made=true" >> $GITHUB_OUTPUT
           echo "✅ Changes were made by Claude Code" >> $GITHUB_STEP_SUMMARY
@@ -158,6 +162,11 @@ runs:
             "$JIRA_KEY" "$COMMIT_DESC" "$DIFF_STATS" > "$COMMIT_MSG_FILE"
           git commit -F "$COMMIT_MSG_FILE"
         fi
+
+    - name: Push feature branch
+      if: steps.detect.outputs.changes_made == 'true'
+      shell: bash
+      run: git push origin ${{ inputs.jira_key }}
 
     - name: Upload Claude output log
       if: always()
